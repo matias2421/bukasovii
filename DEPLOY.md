@@ -14,7 +14,7 @@ Costo total: **$0/mes** en los planes gratuitos.
 El repositorio git local ya está creado con su primer commit. En [github.com/new](https://github.com/new) crea un repositorio (puede ser privado) llamado por ejemplo `bukasovii`, **sin** README ni .gitignore inicial, y luego:
 
 ```bash
-git remote add origin https://github.com/TU_USUARIO/bukasovii.git
+git remote add origin https://github.com/matias2421/bukasovii.git
 git branch -M main
 git push -u origin main
 ```
