@@ -29,7 +29,18 @@ export default function AdminDishRow({ dish }: { dish: Dish }) {
             name="image"
             accept="image/jpeg,image/png,image/webp"
             className="hidden"
-            onChange={() => imageForm.current?.requestSubmit()}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              if (file.size > 5 * 1024 * 1024) {
+                alert(
+                  "La foto pesa más de 5 MB. Usa una más liviana (o toma captura de pantalla de la foto, que pesa menos).",
+                );
+                e.target.value = "";
+                return;
+              }
+              imageForm.current?.requestSubmit();
+            }}
           />
           <button
             type="button"

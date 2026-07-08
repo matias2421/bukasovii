@@ -8,7 +8,7 @@ const useBlob = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 export async function saveDishImage(
   filename: string,
   file: File,
-): Promise<string> {
+): Promise<string | null> {
   if (useBlob()) {
     const { put } = await import("@vercel/blob");
     const blob = await put(`dishes/${filename}`, file, {
@@ -16,6 +16,14 @@ export async function saveDishImage(
       addRandomSuffix: false,
     });
     return blob.url;
+  }
+
+  // En Vercel el disco es de solo lectura: sin Blob configurado no se puede subir
+  if (process.env.VERCEL) {
+    console.error(
+      "Upload de imagen omitido: falta BLOB_READ_WRITE_TOKEN (Storage → Blob en Vercel)",
+    );
+    return null;
   }
 
   const uploadsDir = path.join(process.cwd(), "public", "uploads");

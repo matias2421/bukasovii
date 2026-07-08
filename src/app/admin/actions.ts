@@ -119,6 +119,7 @@ export async function uploadDishImage(formData: FormData) {
   if (prev.rows.length === 0) return;
 
   const imageUrl = await saveDishImage(`${id}-${Date.now()}${ext}`, file);
+  if (!imageUrl) return;
   await db.execute({
     sql: "UPDATE dishes SET image_url = ? WHERE id = ?",
     args: [imageUrl, id],
