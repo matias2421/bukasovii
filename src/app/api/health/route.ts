@@ -1,4 +1,5 @@
 import { getDb } from "@/lib/db";
+import { useBlob } from "@/lib/storage";
 
 // Diagnóstico: reporta si los servicios están configurados (sin exponer secretos)
 export async function GET() {
@@ -13,7 +14,7 @@ export async function GET() {
 
   return Response.json({
     db,
-    blob: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+    blob: useBlob(),
     adminPassword: Boolean(process.env.ADMIN_PASSWORD),
   });
 }

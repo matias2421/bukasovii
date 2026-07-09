@@ -45,9 +45,10 @@ Las tablas y los platos iniciales se crean solos la primera vez que la app arran
 
 ## 4. Activar las fotos (Vercel Blob)
 
-1. En el proyecto de Vercel: pestaña **Storage → Create Database → Blob** → nombre `fotos`.
-2. Al conectarlo al proyecto, Vercel agrega sola la variable `BLOB_READ_WRITE_TOKEN`.
-3. **Redeploy** (Deployments → ⋯ → Redeploy) para que la tome.
+1. En el proyecto de Vercel: pestaña **Storage → Create Database → Blob** → nombre `fotos`, región `iad1`, acceso público.
+2. Conéctalo al proyecto (**Connect Project** → `bukasovii`). Vercel agrega sola las variables (`BLOB_STORE_ID` con la conexión OIDC nueva, o `BLOB_READ_WRITE_TOKEN` con la clásica — la app soporta ambas).
+3. **Redeploy** (Deployments → ⋯ → Redeploy) para que las tome.
+4. Comprueba en `https://TU-PROYECTO.vercel.app/api/health` que diga `"blob": true`.
 
 ## 5. Probar
 

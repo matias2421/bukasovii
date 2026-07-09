@@ -1,9 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
-// Producción: Vercel Blob (requiere BLOB_READ_WRITE_TOKEN).
+// Producción: Vercel Blob, por token clásico (BLOB_READ_WRITE_TOKEN) o por
+// conexión OIDC (BLOB_STORE_ID, la que crea Vercel al conectar el store).
 // Local: archivos en public/uploads.
-const useBlob = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+export const useBlob = () =>
+  Boolean(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID);
 
 export async function saveDishImage(
   filename: string,
@@ -21,7 +23,7 @@ export async function saveDishImage(
   // En Vercel el disco es de solo lectura: sin Blob configurado no se puede subir
   if (process.env.VERCEL) {
     console.error(
-      "Upload de imagen omitido: falta BLOB_READ_WRITE_TOKEN (Storage → Blob en Vercel)",
+      "Upload de imagen omitido: no hay Blob conectado (Storage → Blob → Connect Project en Vercel)",
     );
     return null;
   }
