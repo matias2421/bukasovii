@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/adminAuth";
+import SubmitButton from "@/components/SubmitButton";
 import { login } from "../actions";
 
 export default async function AdminLoginPage({
@@ -31,12 +32,12 @@ export default async function AdminLoginPage({
         {error && (
           <p className="mt-2 text-xs text-red-400">Contraseña incorrecta.</p>
         )}
-        <button
-          type="submit"
+        <SubmitButton
+          pendingText="Entrando…"
           className="mt-4 w-full rounded-xl bg-amber py-2.5 text-sm font-semibold text-amber-dark"
         >
           Entrar
-        </button>
+        </SubmitButton>
       </form>
     </main>
   );

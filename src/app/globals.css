@@ -45,3 +45,24 @@ body {
   background: var(--color-ink);
   color: var(--color-text);
 }
+
+/* Feedback táctil: todo botón responde visiblemente al presionarlo */
+button,
+[role="button"] {
+  transition:
+    transform 120ms ease,
+    opacity 120ms ease,
+    filter 120ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:active:not(:disabled),
+[role="button"]:active {
+  transform: scale(0.95);
+  filter: brightness(1.25);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

@@ -1,6 +1,7 @@
 import { Category } from "@/lib/types";
 import { createDish } from "@/app/admin/actions";
 import AdminDishRow from "./AdminDishRow";
+import SubmitButton from "@/components/SubmitButton";
 
 export default function AdminCategory({ category }: { category: Category }) {
   return (
@@ -55,9 +56,12 @@ export default function AdminCategory({ category }: { category: Category }) {
             className="mt-1 w-full rounded-lg border border-border bg-ink px-3 py-2 text-sm text-text placeholder:text-text-muted focus:border-amber focus:outline-none"
           />
         </div>
-        <button className="rounded-lg bg-amber px-4 py-2 text-sm font-semibold text-amber-dark">
+        <SubmitButton
+          pendingText="Agregando…"
+          className="rounded-lg bg-amber px-4 py-2 text-sm font-semibold text-amber-dark"
+        >
           Agregar
-        </button>
+        </SubmitButton>
       </form>
     </section>
   );

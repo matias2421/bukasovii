@@ -3,6 +3,7 @@ import { isAdmin } from "@/lib/adminAuth";
 import { getMenu } from "@/lib/menu";
 import { logout } from "./actions";
 import AdminCategory from "@/components/admin/AdminCategory";
+import SubmitButton from "@/components/SubmitButton";
 
 export default async function AdminPage() {
   if (!(await isAdmin())) redirect("/admin/login");
@@ -19,9 +20,12 @@ export default async function AdminPage() {
           </p>
         </div>
         <form action={logout}>
-          <button className="rounded-full border border-border px-4 py-1.5 text-xs text-text-muted">
+          <SubmitButton
+            pendingText="Saliendo…"
+            className="rounded-full border border-border px-4 py-1.5 text-xs text-text-muted"
+          >
             Salir
-          </button>
+          </SubmitButton>
         </form>
       </div>
 

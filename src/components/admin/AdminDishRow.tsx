@@ -1,7 +1,9 @@
 "use client";
 
 import { useRef } from "react";
+import { useFormStatus } from "react-dom";
 import { Dish } from "@/lib/types";
+import SubmitButton from "@/components/SubmitButton";
 import {
   deleteDish,
   toggleDish,
@@ -9,10 +11,73 @@ import {
   uploadDishImage,
 } from "@/app/admin/actions";
 
-export default function AdminDishRow({ dish }: { dish: Dish }) {
+// Vive dentro del <form> de la foto: muestra "Subiendo…" mientras corre la acción.
+function ImageUploader({ dish }: { dish: Dish }) {
+  const { pending } = useFormStatus();
   const fileInput = useRef<HTMLInputElement>(null);
-  const imageForm = useRef<HTMLFormElement>(null);
 
+  return (
+    <>
+      <input type="hidden" name="id" value={dish.id} />
+      <input
+        ref={fileInput}
+        type="file"
+        name="image"
+        accept="image/jpeg,image/png,image/webp"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          if (file.size > 5 * 1024 * 1024) {
+            alert(
+              "La foto pesa más de 5 MB. Usa una más liviana (o toma captura de pantalla de la foto, que pesa menos).",
+            );
+            e.target.value = "";
+            return;
+          }
+          e.target.form?.requestSubmit();
+        }}
+      />
+      <button
+        type="button"
+        disabled={pending}
+        onClick={() => fileInput.current?.click()}
+        className="group relative block h-20 w-20 overflow-hidden rounded-xl bg-wood"
+        title="Cambiar foto"
+      >
+        {dish.imageUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={dish.imageUrl}
+            alt={dish.name}
+            className="h-full w-full object-cover"
+          />
+        )}
+        {pending ? (
+          <span className="absolute inset-0 flex items-center justify-center gap-1 bg-black/60 text-[10px] font-semibold text-white">
+            <svg
+              viewBox="0 0 24 24"
+              className="h-3 w-3 animate-spin"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+            >
+              <path d="M12 3a9 9 0 1 1-9 9" />
+            </svg>
+            Subiendo…
+          </span>
+        ) : (
+          <span className="absolute inset-0 flex items-center justify-center bg-black/50 text-[10px] font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100">
+            Cambiar foto
+          </span>
+        )}
+      </button>
+    </>
+  );
+}
+
+export default function AdminDishRow({ dish }: { dish: Dish }) {
   return (
     <div
       className={`rounded-2xl border border-border bg-surface p-3 ${
@@ -20,46 +85,8 @@ export default function AdminDishRow({ dish }: { dish: Dish }) {
       }`}
     >
       <div className="flex gap-3">
-        {/* imagen */}
-        <form action={uploadDishImage} ref={imageForm} className="shrink-0">
-          <input type="hidden" name="id" value={dish.id} />
-          <input
-            ref={fileInput}
-            type="file"
-            name="image"
-            accept="image/jpeg,image/png,image/webp"
-            className="hidden"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
-              if (file.size > 5 * 1024 * 1024) {
-                alert(
-                  "La foto pesa más de 5 MB. Usa una más liviana (o toma captura de pantalla de la foto, que pesa menos).",
-                );
-                e.target.value = "";
-                return;
-              }
-              imageForm.current?.requestSubmit();
-            }}
-          />
-          <button
-            type="button"
-            onClick={() => fileInput.current?.click()}
-            className="group relative block h-20 w-20 overflow-hidden rounded-xl bg-wood"
-            title="Cambiar foto"
-          >
-            {dish.imageUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={dish.imageUrl}
-                alt={dish.name}
-                className="h-full w-full object-cover"
-              />
-            )}
-            <span className="absolute inset-0 flex items-center justify-center bg-black/50 text-[10px] font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100">
-              Cambiar foto
-            </span>
-          </button>
+        <form action={uploadDishImage} className="shrink-0">
+          <ImageUploader dish={dish} />
         </form>
 
         {/* campos */}
@@ -87,11 +114,15 @@ export default function AdminDishRow({ dish }: { dish: Dish }) {
             className="rounded-lg border border-border bg-ink px-3 py-1.5 text-sm text-text-muted focus:border-amber focus:outline-none"
           />
           <div className="flex items-center gap-2">
-            <button className="rounded-lg bg-amber px-3 py-1.5 text-xs font-semibold text-amber-dark">
+            <SubmitButton
+              pendingText="Guardando…"
+              className="rounded-lg bg-amber px-3 py-1.5 text-xs font-semibold text-amber-dark"
+            >
               Guardar
-            </button>
-            <button
+            </SubmitButton>
+            <SubmitButton
               formAction={toggleDish}
+              pendingText={dish.available ? "Marcando…" : "Activando…"}
               className={`rounded-lg border px-3 py-1.5 text-xs font-semibold ${
                 dish.available
                   ? "border-border text-text-muted"
@@ -99,9 +130,10 @@ export default function AdminDishRow({ dish }: { dish: Dish }) {
               }`}
             >
               {dish.available ? "Marcar agotado" : "Activar"}
-            </button>
-            <button
+            </SubmitButton>
+            <SubmitButton
               formAction={deleteDish}
+              pendingText="Eliminando…"
               onClick={(e) => {
                 if (!confirm(`¿Eliminar "${dish.name}" de la carta?`)) {
                   e.preventDefault();
@@ -110,7 +142,7 @@ export default function AdminDishRow({ dish }: { dish: Dish }) {
               className="ml-auto rounded-lg border border-red-900/60 px-3 py-1.5 text-xs text-red-400"
             >
               Eliminar
-            </button>
+            </SubmitButton>
           </div>
         </form>
       </div>
