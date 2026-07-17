@@ -58,6 +58,7 @@ Las tablas y los platos iniciales se crean solos la primera vez que la app arran
 
 ## Notas
 
-- **Los datos locales no se copian solos**: los platos/fotos que agregaste en tu PC viven en `data/menu.db`. Producción arranca con la carta inicial de ejemplo; carga los platos y fotos reales desde el panel `/admin` de la página ya publicada.
+- **Catálogo real cargado**: la base de datos (local y producción) arranca con el catálogo completo de Bukasovii — 34 productos en 7 categorías, con sus fotos en `public/menu/`. Editar/agregar/quitar se hace desde el panel `/admin`.
+- **Fotos del catálogo inicial**: viven como archivos en `public/menu/` (se sirven estáticas, no necesitan Vercel Blob). Las fotos que suba el administrador desde el panel sí usan Vercel Blob.
 - **Actualizaciones**: cada `git push` a `main` redespliega automáticamente.
 - **Dominio propio** (opcional, ~$12 USD/año): se compra en Vercel (Settings → Domains) o en cualquier registrador y se apunta al proyecto.

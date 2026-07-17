@@ -1,6 +1,7 @@
 import { createClient, type Client } from "@libsql/client";
 import fs from "node:fs";
 import path from "node:path";
+import { catalogSeed } from "./catalogSeed";
 
 // Local: archivo SQLite en data/menu.db (sin cuentas ni servicios).
 // Producción: Turso, configurando TURSO_DATABASE_URL y TURSO_AUTH_TOKEN.
@@ -15,45 +16,6 @@ const client = createClient({
   url,
   authToken: process.env.TURSO_AUTH_TOKEN,
 });
-
-const seed: [string, string, [string, string, string, number][]][] = [
-  [
-    "entradas",
-    "Entradas",
-    [
-      ["papas-queso", "Papas con queso", "Papas criollas, queso fundido y tocineta", 16000],
-      ["aros-cebolla", "Aros de cebolla", "Crocantes, con salsa ranch de la casa", 14000],
-      ["nachos", "Nachos Bukasovii", "Guacamole, pico de gallo y queso cheddar", 19000],
-    ],
-  ],
-  [
-    "fuertes",
-    "Fuertes",
-    [
-      ["burger-clasica", "Burger clásica", "Carne, queso, lechuga y salsa de la casa", 28000],
-      ["burger-bacon", "Burger bacon BBQ", "Doble carne, tocineta, cheddar y salsa BBQ", 34000],
-      ["sandwich-pollo", "Sándwich de pollo crocante", "Pollo apanado, col morada y mayo picante", 26000],
-      ["hot-dog", "Hot dog especial", "Salchicha ahumada, papas hilo y salsas", 18000],
-    ],
-  ],
-  [
-    "bebidas",
-    "Bebidas",
-    [
-      ["limonada-coco", "Limonada de coco", "Refrescante, con hielo", 9000],
-      ["malteada-vainilla", "Malteada de vainilla", "Cremosa, hecha al momento", 13000],
-      ["gaseosa", "Gaseosa", "350 ml, varios sabores", 6000],
-    ],
-  ],
-  [
-    "postres",
-    "Postres",
-    [
-      ["brownie", "Brownie con helado", "Brownie tibio, helado de vainilla", 15000],
-      ["cheesecake", "Cheesecake de maracuyá", "Porción individual", 14000],
-    ],
-  ],
-];
 
 async function init() {
   await client.executeMultiple(`
@@ -78,15 +40,23 @@ async function init() {
   if (Number(count.rows[0].n) > 0) return;
 
   const statements = [];
-  for (const [catIndex, [catId, catName, dishes]] of seed.entries()) {
+  for (const [catIndex, category] of catalogSeed.entries()) {
     statements.push({
       sql: "INSERT INTO categories (id, name, position) VALUES (?, ?, ?)",
-      args: [catId, catName, catIndex],
+      args: [category.id, category.name, catIndex],
     });
-    for (const [dishIndex, [id, name, description, price]] of dishes.entries()) {
+    for (const [dishIndex, dish] of category.dishes.entries()) {
       statements.push({
-        sql: "INSERT INTO dishes (id, category_id, name, description, price, position) VALUES (?, ?, ?, ?, ?, ?)",
-        args: [id, catId, name, description, price, dishIndex],
+        sql: "INSERT INTO dishes (id, category_id, name, description, price, image_url, position) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        args: [
+          dish.id,
+          category.id,
+          dish.name,
+          dish.description,
+          dish.price,
+          dish.imageUrl,
+          dishIndex,
+        ],
       });
     }
   }
