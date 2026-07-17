@@ -19,8 +19,18 @@ const pacifico = Pacifico({
 });
 
 export const metadata: Metadata = {
-  title: "Bukasovii",
-  description: "Carta digital de Bukasovii",
+  metadataBase: new URL("https://bukasovii.vercel.app"),
+  title: "Bukasovii · Papas Legendarias",
+  description:
+    "Nuestra carta: papas legendarias, alitas, hamburguesas, arepas y más. Mira el menú completo con fotos y precios.",
+  openGraph: {
+    title: "Bukasovii · Papas Legendarias",
+    description:
+      "Papas legendarias, alitas, hamburguesas, arepas y más. Mira la carta completa con fotos y precios.",
+    type: "website",
+    locale: "es_CO",
+    siteName: "Bukasovii",
+  },
 };
 
 export default function RootLayout({

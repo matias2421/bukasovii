@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { restaurant } from "@/lib/restaurant";
 import FriesMark from "./FriesMark";
+import OpenStatusBadge from "./OpenStatus";
 
 function findLogo() {
   for (const file of ["logo.jpg", "logo.jpeg", "logo.png", "logo.webp"]) {
@@ -74,12 +75,8 @@ export default function CoverHeader() {
           {restaurant.tagline}
         </p>
         <div className="mt-2.5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-text-muted">
-          <span className="inline-flex items-center gap-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-green" />
-            Abierto
-          </span>
-          <span>{restaurant.schedule}</span>
-          <span>{restaurant.address}</span>
+          <OpenStatusBadge />
+          {restaurant.address && <span>{restaurant.address}</span>}
         </div>
       </div>
     </header>
