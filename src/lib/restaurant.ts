@@ -7,19 +7,20 @@ export const restaurant = {
 
   // Contacto
   whatsapp: "573113278631", // número real (del logo)
-  instagram: "", // TODO: @usuario de Instagram (vacío = no se muestra)
-  address: "", // TODO: dirección real (vacío = no se muestra)
-  mapsUrl: "", // TODO: link de Google Maps (vacío = no se muestra)
+  instagram: "", // @usuario de Instagram (vacío = no se muestra)
+  address: "Parque principal, Manguruma – Frontino, Antioquia",
+  mapsUrl:
+    "https://www.google.com/maps/search/?api=1&query=Parque+principal+Manguruma+Frontino+Antioquia",
 
   // Horario semanal (hora de Colombia). Índice: 0=Domingo ... 6=Sábado.
-  // TODO: confirmar el horario real. Placeholder: Mar–Dom 12:00–22:00, Lunes cerrado.
+  // Abren 6:00 pm – 10:30 pm todos los días menos lunes.
   hours: [
-    { open: "12:00", close: "22:00" }, // Domingo
+    { open: "18:00", close: "22:30" }, // Domingo
     null, // Lunes (cerrado)
-    { open: "12:00", close: "22:00" }, // Martes
-    { open: "12:00", close: "22:00" }, // Miércoles
-    { open: "12:00", close: "22:00" }, // Jueves
-    { open: "12:00", close: "22:00" }, // Viernes
-    { open: "12:00", close: "22:00" }, // Sábado
+    { open: "18:00", close: "22:30" }, // Martes
+    { open: "18:00", close: "22:30" }, // Miércoles
+    { open: "18:00", close: "22:30" }, // Jueves
+    { open: "18:00", close: "22:30" }, // Viernes
+    { open: "18:00", close: "22:30" }, // Sábado
   ] as DayHours[],
 };
