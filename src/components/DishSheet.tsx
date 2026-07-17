@@ -3,6 +3,7 @@
 import { Dish } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 import { useCart } from "./CartContext";
+import { ORDERING_ENABLED } from "@/lib/config";
 
 export default function DishSheet({
   dish,
@@ -40,7 +41,7 @@ export default function DishSheet({
         <p className="mt-3 text-lg font-semibold text-text">
           {formatPrice(dish.price)}
         </p>
-        {dish.available ? (
+        {ORDERING_ENABLED && dish.available ? (
           <button
             onClick={() => {
               add(dish);
@@ -50,11 +51,11 @@ export default function DishSheet({
           >
             Agregar al pedido
           </button>
-        ) : (
+        ) : !dish.available ? (
           <p className="mt-5 w-full rounded-full border border-border py-3.5 text-center text-sm font-semibold text-text-muted">
             Agotado por hoy
           </p>
-        )}
+        ) : null}
       </div>
     </div>
   );

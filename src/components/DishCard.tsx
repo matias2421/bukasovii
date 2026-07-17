@@ -3,6 +3,7 @@
 import { Dish } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 import { useCart } from "./CartContext";
+import { ORDERING_ENABLED } from "@/lib/config";
 
 export default function DishCard({
   dish,
@@ -48,7 +49,7 @@ export default function DishCard({
             />
           )}
         </div>
-        {dish.available && (
+        {ORDERING_ENABLED && dish.available && (
           <button
             onClick={(e) => {
               e.stopPropagation();

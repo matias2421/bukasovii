@@ -6,6 +6,7 @@ import DishCard from "./DishCard";
 import DishSheet from "./DishSheet";
 import CartBar from "./CartBar";
 import { CartProvider } from "./CartContext";
+import { ORDERING_ENABLED } from "@/lib/config";
 
 export default function MenuExperience({
   categories,
@@ -102,7 +103,7 @@ export default function MenuExperience({
           </div>
         </nav>
 
-        <div className="px-5 pb-32">
+        <div className={ORDERING_ENABLED ? "px-5 pb-32" : "px-5 pb-12"}>
           {visible.length === 0 && (
             <p className="py-10 text-center text-sm text-text-muted">
               No encontramos platos para “{query}”.
@@ -138,7 +139,7 @@ export default function MenuExperience({
       </div>
 
       <DishSheet dish={selected} onClose={() => setSelected(null)} />
-      <CartBar />
+      {ORDERING_ENABLED && <CartBar />}
     </CartProvider>
   );
 }
