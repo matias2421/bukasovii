@@ -143,6 +143,13 @@ export const catalogSeed: SeedCategory[] = [
         "description": "Arepa Carne de res desmechada con hogado queso tajado tocineta maicitos salsa dulce maíz crema de leña",
         "price": 22000,
         "imageUrl": "/menu/arepa-rellena.jpg"
+      },
+      {
+        "id": "arepa-rellena-de-queso",
+        "name": "Arepa rellena de queso",
+        "description": "Rellena de queso y extra queso, con maicitos y tocineta. Salsas al gusto (opcional).",
+        "price": 22000,
+        "imageUrl": "/menu/arepa-rellena-de-queso.jpg"
       }
     ]
   },

@@ -9,7 +9,7 @@ export const restaurant = {
   whatsapp: "573113278631", // número real (del logo)
   instagram: "", // @usuario de Instagram (vacío = no se muestra)
   address: "Parque de Manguruma – Frontino, Antioquia",
-  mapsUrl: "https://www.google.com/maps/search/?api=1&query=6.771206,-76.132102",
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Bukasovii+Frontino+Antioquia",
 
   // Horario semanal (hora de Colombia). Índice: 0=Domingo ... 6=Sábado.
   // Abren 6:00 pm – 10:30 pm todos los días menos lunes.
